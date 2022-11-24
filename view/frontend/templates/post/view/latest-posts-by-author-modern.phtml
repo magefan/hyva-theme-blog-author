@@ -1,0 +1,68 @@
+<?php
+/**
+ * Copyright © Magefan (support@magefan.com). All rights reserved.
+ * Please visit Magefan.com for license details (https://magefan.com/end-user-license-agreement).
+ */
+?>
+<?php
+/**
+ * Blog latest posts by author template
+ *
+ * @var $block \Magefan\BlogAuthor\Block\Post\View\LatestPostsByAuthor
+ */
+?>
+<?php
+    $author = $block->getAuthor();
+    $width = (int)$block->getBackgroundImageWidth() ?: 500;
+    $imageHelper = $this->helper(\Magefan\Blog\Helper\Image::class);
+?>
+<?php if ($author && $block->isRelatedPostsByAuthorEnabled()) { ?>
+    <?php $postCollection = $block->getPostCollection(); ?>
+    <?php if (count($postCollection)) { ?>
+    <div class="mfblog-related-posts-block block related hhhhhh">
+        <div class="block-title title">
+            <strong id="block-related-posts-heading"><?= $block->escapeHtml(__('Latest From %1', $author->getName())) ?></strong>
+        </div>
+        <div class="block-content">
+            <!-- post list -->
+            <div class="post-list">
+                <?php foreach ($postCollection as $post) { ?>
+                    <?php
+                    $_postUrl = $block->escapeUrl($post->getPostUrl());
+                    $_postName = $block->escapeHtml($post->getTitle());
+                    ?>
+                    <!-- post item -->
+                    <div class="post-item d-flex mb-4">
+                        <?php $featuredImage = $post->getFeaturedListImg() ?: $post->getFeaturedImg(); ?>
+                        <?php if ($featuredImage) { ?>
+                            <div class="image-container">
+                                <?php
+                                $featuredImage = $imageHelper->init($featuredImage)->resize($width, null, false);
+                                /*
+                                $featuredImgAlt = $post->getData('featured_list_img_alt') ?: $post->getData('featured_img_alt');
+                                if (!$featuredImgAlt) {
+                                    $featuredImgAlt =  $_postName;
+                                }
+                                */
+                                ?>
+                                <a class="image-wrap  _4x3" title="<?= $_postName ?>" href="<?= $_postUrl ?>">
+                                    <div class="animation-type-zoom bg-img mfblogunveil" data-original="<?= $block->escapeHtml($featuredImage) ?>"></div>
+                                </a>
+                            </div>
+                        <?php } ?>
+                        <div class="block-info px-3">
+                            <div class="post-title m-0 mb-2">
+                                <a class="post-item-name" title="<?= $_postName ?>" href="<?= $_postUrl ?>">
+                                    <?= $_postName ?>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- END post item -->
+                <?php } ?>
+            </div>
+            <!-- END post list -->
+        </div>
+    </div>
+    <?php } ?>
+<?php } ?>

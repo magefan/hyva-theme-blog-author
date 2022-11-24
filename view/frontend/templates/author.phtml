@@ -1,0 +1,91 @@
+<?php
+/**
+ * Copyright © Magefan (support@magefan.com). All rights reserved.
+ * Please visit Magefan.com for license details (https://magefan.com/end-user-license-agreement).
+ */
+?>
+<?php
+/**
+ * Blog author template
+ *
+ * @var $block \Magefan\BlogAuthor\Block\Post\View\Author|\Magefan\BlogAuthor\Block\Author
+ */
+?>
+<?php
+    $author =  $block->getAuthor();
+    $isShortContent = $block->getDisplayShortContent();
+    $width = (int)$block->getBackgroundImageWidth() ?: 200;
+    $imageHelper = $this->helper(\Magefan\Blog\Helper\Image::class);
+?>
+
+<?php if ($author) { ?>
+    <div class="author p-5 mb-10 border-gray-300 border-2">
+        <div class="block-info flex">
+            <?php if ($featuredImage = $author->getFeaturedImg()) { ?>
+                <?php $featuredImage = $imageHelper->init($featuredImage)->resize($width, null, false); ?>
+                <div class="block-img w-[100px] mr-5">
+                    <img class="author-image w-[100px] h-auto" src="<?= $featuredImage ?>" alt="<?= $block->escapeHtml($author->getName()) ?>" />
+                </div>
+            <?php } ?>
+
+            <div class="block-data grow">
+                <div class="author-name my-2 text-lg leading-5 font-bold text-[#222]"><?= $block->escapeHtml($author->getName()) ?></div>
+                <div class="author-position my-2 font-semibold text-[#555]"><?= $block->escapeHtml($author->getRole()) ?></div>
+                <div class="social-icons flex">
+                    <?php if ($socialUrl = $author->getFacebookPageUrl()) { ?>
+                        <div class="icon my-1.5 mr-3">
+                            <a href="<?= $block->escapeHtml($socialUrl) ?>" target="_blank" rel="nofollow noopener">
+                                <img class="w-5" src="<?= $block->escapeUrl($this->getViewFileUrl('Magefan_BlogAuthor::images/facebook.svg')) ?>" />
+                            </a>
+                        </div>
+                    <?php } ?>
+                    <?php if ($socialUrl = $author->getTwitterPageUrl()) { ?>
+                        <div class="icon my-1.5 mr-3">
+                            <a href="<?= $block->escapeHtml($socialUrl) ?>" target="_blank" rel="nofollow noopener">
+                                <img class="w-5" src="<?= $block->escapeUrl($this->getViewFileUrl('Magefan_BlogAuthor::images/twitter.svg')) ?>" />
+                            </a>
+                        </div>
+                    <?php } ?>
+                    <?php if ($socialUrl = $author->getInstagramPageUrl()) { ?>
+                        <div class="icon my-1.5 mr-3">
+                            <a href="<?= $block->escapeHtml($socialUrl) ?>" target="_blank" rel="nofollow noopener">
+                                <img class="w-5" src="<?= $block->escapeUrl($this->getViewFileUrl('Magefan_BlogAuthor::images/Instagram.svg')) ?>" />
+                            </a>
+                        </div>
+                    <?php } ?>
+                    <?php if ($socialUrl = $author->getGoogleplusPageUrl()) { ?>
+                        <div class="icon my-1.5 mr-3">
+                            <a href="<?= $block->escapeHtml($socialUrl) ?>" target="_blank" rel="nofollow noopener">
+                                <img class="w-5" src="<?= $block->escapeUrl($this->getViewFileUrl('Magefan_BlogAuthor::images/google.svg')) ?>" />
+                            </a>
+                        </div>
+                    <?php } ?>
+                    <?php if ($socialUrl = $author->getLinkedinPageUrl()) { ?>
+                        <div class="icon my-1.5 mr-3">
+                            <a href="<?= $block->escapeHtml($socialUrl) ?>" target="_blank" rel="nofollow noopener">
+                                <img class="w-5" src="<?= $block->escapeUrl($this->getViewFileUrl('Magefan_BlogAuthor::images/linkedin.svg')) ?>" />
+                            </a>
+                        </div>
+                    <?php } ?>
+                </div>
+            </div>
+        </div>
+
+        <div class="block-description">
+            <?php
+            $content = $isShortContent ? trim($author->getShortFilteredContent(null, '...'))
+                : trim($author->getFilteredContent());
+            ?>
+            <?php if ($content && $content != '...') { ?>
+                <div class="block-content mt-2.5 text-[#777]">
+                    <p><?= $content ?></p>
+                </div>
+                <?php if ($isShortContent) { ?>
+                    <div class="action text-right">
+                        <a class="read-more btn btn-default inline-block text-white text-sm font-medium leading-none py-2.5 px-3 bg-[#4db2ec] hover:bg-[#222] rounded-none" href="<?php echo $author->getAuthorUrl() ?>"><?php echo __("Read more »");?></a>
+                    </div>
+                <?php } ?>
+            <?php } ?>
+        </div>
+    </div>
+<?php } ?>

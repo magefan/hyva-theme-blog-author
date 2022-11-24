@@ -1,0 +1,38 @@
+<?php
+/**
+ * Copyright © Magefan (support@magefan.com). All rights reserved.
+ * Please visit Magefan.com for license details (https://magefan.com/end-user-license-agreement).
+ */
+?>
+<?php
+/**
+ * Blog latest posts by author template
+ *
+ * @var $block \Magefan\BlogAuthor\Block\Post\View\LatestPostsByAuthor
+ */
+?>
+<?php
+    $author = $block->getAuthor();
+?>
+<?php if ($author && $block->isRelatedPostsByAuthorEnabled()) { ?>
+    <?php $postCollection = $block->getPostCollection(); ?>
+    <?php if (count($postCollection)) { ?>
+    <div class="block related">
+        <div class="block-title title">
+            <strong id="block-related-posts-heading" role="heading" aria-level="2">
+                <?= $block->escapeHtml(__('Latest From %1', $author->getName())) ?>
+            </strong>
+        </div>
+        <ol class="block-content">
+            <?php foreach ($postCollection as $post) { ?>
+                <li class="item">
+                    <a class="post-item-link" title="<?= $block->escapeHtml($post->getTitle()) ?>"
+                       href="<?= $post->getPostUrl() ?>">
+                        <?= $block->escapeHtml($post->getTitle()) ?>
+                    </a>
+                </li>
+            <?php } ?>
+        </ol>
+    </div>
+    <?php } ?>
+<?php } ?>
