@@ -80,7 +80,7 @@
                 <div class="block-content mt-2.5 text-[#777]">
                     <p><?= $content ?></p>
                 </div>
-                <?php if ($isShortContent) { ?>
+                <?php if ($isShortContent && $block->authorPageEnabled()) { ?>
                     <div class="action text-right">
                         <a class="read-more btn btn-default inline-block text-white text-sm font-medium leading-none py-2.5 px-3 bg-[#4db2ec] hover:bg-[#222] rounded-none" href="<?php echo $author->getAuthorUrl() ?>"><?php echo __("Read more »");?></a>
                     </div>
